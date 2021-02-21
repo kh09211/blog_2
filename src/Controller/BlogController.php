@@ -21,6 +21,9 @@ class BlogController extends AbstractController
     public function __construct(Security $security) {
         // used for getting the user object
         $this->security = $security;
+
+        // since we will be using the authenticated user multiple times in this controller, define it here
+        $this->authenticatedUser = $security->getUser();
     
     }
 
@@ -39,8 +42,8 @@ class BlogController extends AbstractController
      */
     public function home(BlogRepository $blogRepository): Response
     {
-        // get the authenticated user
-        $user = $this->security->getUser();
+        // get the authenticated user from the constructor
+        $user = $this->authenticatedUser;
        
         if ($user) {
             // return only blogs for the authenticated user
@@ -60,7 +63,12 @@ class BlogController extends AbstractController
      */
     public function new(Request $request): Response
     {
+
         $blog = new Blog();
+        $blog->setUser($this->authenticatedUser); // add the user to the object
+        $blog->setCreatedAt(new \DateTime()); // timestamp it for NOW
+       
+        
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
 

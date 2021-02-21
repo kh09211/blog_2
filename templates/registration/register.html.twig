@@ -17,14 +17,19 @@
                     <div class="card-body">
                     
                     {{ form_start(registrationForm) }}
+                        {{ form_row(registrationForm.name, {
+                            label: 'Nombre:'
+                        }) }}
                         {{ form_row(registrationForm.email, {
-                            label: 'Correo'
+                            label: 'Correo:'
                         }) }}
                         {{ form_row(registrationForm.plainPassword, {
-                            label: 'Contraseña'
+                            label: 'Contraseña:'
                         }) }}
+                        {#
                         {{ form_row(registrationForm.agreeTerms) }}
-                        <div class="form-group row justify-content-center mb-3">
+                        #}
+                        <div class="form-group row justify-content-center my-4">
                             
                                 <button type="submit" class="btn btn-primary text-center">Registro</button>
                         

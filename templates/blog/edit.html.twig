@@ -2,12 +2,22 @@
 
 {% block title %}Edit Blog{% endblock %}
 
-{% block body %}
-    <h1>Edit Blog</h1>
+{% block content %}
 
-    {{ include('blog/_form.html.twig', {'button_label': 'Update'}) }}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 mt-5">
+            <div class="card">
+                <div class="card-header text-center" style="background-color: #e3f2fd;">Nueva Entrada de Blog</div>
 
-    <a href="{{ path('blog_index') }}">back to list</a>
+                <div class="card-body">
+                    
+                    {{ include('blog/_form.html.twig', {'button_label': 'Editar'}) }}
 
-    {{ include('blog/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

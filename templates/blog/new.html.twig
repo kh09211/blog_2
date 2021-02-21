@@ -2,10 +2,21 @@
 
 {% block title %}New Blog{% endblock %}
 
-{% block body %}
-    <h1>Create new Blog</h1>
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 mt-5">
+            <div class="card">
+                <div class="card-header text-center" style="background-color: #e3f2fd;">Nueva Entrada de Blog</div>
 
-    {{ include('blog/_form.html.twig') }}
+                <div class="card-body">
+                    
+                    {{ include('blog/_form.html.twig', {'button_label': 'Crear'}) }}
 
-    <a href="{{ path('blog_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
