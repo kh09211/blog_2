@@ -8,4 +8,4 @@ twig:
 
     # global variable to be injected into all twig templates in ADDITION to global app var
     globals:
-        appName: 'Blog de Viajeros'
+        appName: 'Blogs de Viajes'

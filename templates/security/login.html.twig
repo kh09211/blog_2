@@ -5,7 +5,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container animate__animated animate__fadeIn">
     <div class="row justify-content-center mt-3">
         <div class="col-md-8">
             <div class="card">
@@ -27,7 +27,7 @@
                             <label for="inputEmail" class="col-md-4 col-form-label text-md-right">Correo</label>
 
                             <div class="col-md-6">
-                                <input id="inputEmail" type="email" class="form-control" name="email" value="{{ last_username }}" required autocomplete="email" autofocus>
+                                <input id="inputEmail" type="email" class="form-control" name="email" value="{#{ last_username }#}" required autocomplete="email">
                             </div>
                         </div>
 

@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="text-center display-4 text-info my-3 ">Blogs Más Nuevos</div>
+                <div class="text-center display-4 text-info my-3 ">{{ index_title }}</div>
 
                 {% if (is_granted('IS_AUTHENTICATED_FULLY')) %}
                     {# The user is logged in, show button #}

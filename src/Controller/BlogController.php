@@ -39,6 +39,7 @@ class BlogController extends AbstractController
 
         return $this->render('blog/index.html.twig', [
             'blogs' => $blogs,
+            'index_title' => 'Blogs Más Nuevos',
         ]);
     }
 
@@ -63,7 +64,8 @@ class BlogController extends AbstractController
             // return only blogs for the authenticated user
 
             return $this->render('blog/index.html.twig', [
-                'blogs' => $blogs
+                'blogs' => $blogs,
+                'index_title' => 'Mis Blogs',
             ]);
         } else {
             // return to the main blog index for a list of all blogs
