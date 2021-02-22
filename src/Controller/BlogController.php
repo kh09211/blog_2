@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security; // used for fetching the current user object
 use Symfony\Component\HttpFoundation\RedirectResponse; // use for redirects
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\Common\Collections\Criteria;
 
 
 /**
@@ -32,8 +34,11 @@ class BlogController extends AbstractController
      */
     public function index(BlogRepository $blogRepository): Response
     {
+        // get all the blog objects with critera [] so all of them then order by newest first
+        $blogs = $blogRepository->findBy([], ['created_at' => Criteria::DESC]);
+
         return $this->render('blog/index.html.twig', [
-            'blogs' => $blogRepository->findAll(),
+            'blogs' => $blogs,
         ]);
     }
 
@@ -44,12 +49,21 @@ class BlogController extends AbstractController
     {
         // get the authenticated user from the constructor
         $user = $this->authenticatedUser;
+
+        // get just the users blogs and order by newest first
+        // NOTE: The getBlogs() method returns a "PersistentCollection" obj so it will need some work to order properly
+        
+        $criteria = Criteria::create()
+        ->orderBy(['created_at' => Criteria::DESC]);
+
+        $blogs = $user->getBlogs();
+        $blogs = $blogs->matching($criteria);
        
         if ($user) {
             // return only blogs for the authenticated user
 
             return $this->render('blog/index.html.twig', [
-                'blogs' => $user->getBlogs()
+                'blogs' => $blogs
             ]);
         } else {
             // return to the main blog index for a list of all blogs
@@ -60,6 +74,7 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/new", name="blog_new", methods={"GET","POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function new(Request $request): Response
     {
@@ -101,6 +116,12 @@ class BlogController extends AbstractController
      */
     public function edit(Request $request, Blog $blog): Response
     {
+        // Allow only the blog owner ability to edit - throws a 403 response
+        if ($blog->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
 
@@ -121,6 +142,11 @@ class BlogController extends AbstractController
      */
     public function delete(Request $request, Blog $blog): Response
     {
+        // Allow only the blog owner ability to edit - throws a 403 response
+        if ($blog->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($blog);

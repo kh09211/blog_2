@@ -7,48 +7,53 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="text-center display-4 text-info">Blog</div>
+                <div class="text-center display-4 text-info my-3 ">Blogs Más Nuevos</div>
 
-                {# can('create', App\Models\Post::class) #}
-                <!-- The current user can create the post... -->
-                <form action="{{ path('blog_new') }}" method="GET">
-                    <div class="row justify-content-end">
-                        <button class="btn btn-primary mr-5">Nueva Entrada Blog</button>
-                    </div>
-                </form>
-                {# @endcan #}
+                {% if (is_granted('IS_AUTHENTICATED_FULLY')) %}
+                    {# The user is logged in, show button #}
+                    <form action="{{ path('blog_new') }}" method="GET">
+                        <div class="row justify-content-end">
+                            <button class="btn btn-outline-info mr-5 mb-n3">Nueva Entrada Blog</button>
+                        </div>
+                    </form>
+                {% endif %}
 
                 {% for blog in blogs %}
-                <div class="card my-5">
+                <div class="card my-5 border wow animate__animated animate__fadeIn">
+
+                    <div class="card-header" style="background-color: #e3f2fd;">
+                            <a href="{{ path('blog_show', {'id': blog.id}) }}" class="d-block h4 my-1 text-center text-info">{{ blog.title }}</a>
+                        </div>
+
                     <div class="card-body">
-                        <a href="{{ path('blog_show', {'id': blog.id}) }}" class="d-block h2 my-2 text-center text-info">{{ blog.title }}</a>
 
-                        {# @can('update', $post) #}
-                        <!-- The current user can update the post... -->
-                        <div class="row justify-content-end">
-                            <a href="{{ path('blog_edit', {'id': blog.id}) }}" class="h5 text-info mr-5">Editar</a>
-                        </div>
-                        {# @endcan #}
-
-                        <div class="row justify-content-center">
-                            <img src="{{ blog.photo }}" class="text-center w-25 shadow border border-muted my-3" />
-                        </div>
-
-                        <div class="h3 mt-2 mb-1 text-center text-secondary">Autor: {{ blog.user.name }}</div>
-
-                        <div class="mb-2 text-center text-muted">{{ blog.createdAt | date }}</div>
-
-                        <div class="row no-gutters" style="height: 50px; overflow-y: hidden;">
-                            <div class="col-11">
-                                <div class="text-left my-4 ml-5" style="text-indent: 20px; font-size: 18px; overflow-x: hidden;">{{ blog.text }}</div>
+                        {% if (app.user == blog.user) %}
+                            {# The current user can update the blog because they are the creator #}
+                            <div class="row justify-content-end">
+                                <a href="{{ path('blog_edit', {'id': blog.id}) }}" class="h5 text-info mr-5">Editar</a>
                             </div>
-                            <div class="col-1 text-left my-4" style="font-size: 18px;">
-                                ...
+                        {% endif %}
+
+                        <div class="row px-4">
+                            <div class="col-4">
+                                <div class="row justify-content-center">
+                                    <img src="{{ blog.photo }}" class="text-center img-fluid shadow border border-muted my-3 rounded" />
+                                </div>
+
+                                <div class="h4 mb-1 text-center text-secondary">Autor: {{ blog.user.name }}</div>
+
+                                <div class="mb-2 text-center text-muted">{{ blog.createdAt | date }}</div>
                             </div>
+
+                            <div class="col-8">
+                                <div class="text-left mt-3 mb-2 ml-5" style="text-indent: 20px; font-size: 18px; overflow-y: hidden; height: 210px;">{{ blog.text }}</div>
+
+                                <div id="text-blur" class="mt-n4 position-relative" style="height: 20px; z-index: 10; background-color: rgba(255, 255, 255,  0.7);"></div>
+
+                                <a href="{{ path('blog_show', {'id': blog.id}) }}" class="d-block  mt-2 mb-2 text-center text-info">Leer Mas!</a>
+                            </div>
+
                         </div>
-
-                        <a href="{{ path('blog_show', {'id': blog.id}) }}" class="d-block mb-2 text-center text-info">Leer Mas!</a>
-
                     </div>
                 </div>
                 {% endfor %}
@@ -56,44 +61,5 @@
             </div>
         </div>
     </div>
-
-{#
-    <h1>Blog index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Photo</th>
-                <th>Text</th>
-                <th>Created_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for blog in blogs %}
-            <tr>
-                <td>{{ blog.id }}</td>
-                <td>{{ blog.title }}</td>
-                <td>{{ blog.photo }}</td>
-                <td>{{ blog.text }}</td>
-                <td>{{ blog.createdAt ? blog.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('blog_show', {'id': blog.id}) }}">show</a>
-                    <a href="{{ path('blog_edit', {'id': blog.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('blog_new') }}">Create new</a>
-#}
-
 
 {% endblock %}

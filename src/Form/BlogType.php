@@ -18,7 +18,10 @@ class BlogType extends AbstractType
         $builder
             ->add('title', TextType::class, [ 'label' => 'Titulo'])
             ->add('photo', TextType::class, ['label' => 'Foto URL'])
-            ->add('text', TextareaType::class, ['label' => 'Texto']);
+            ->add('text', TextareaType::class, [
+                'label' => 'Texto',
+                'attr' => ['style' => 'height: 150px;'],
+                ]);
             /*                    This info is not needed in the form!
             ->add('created_at')
             ->add('user', EntityType::class, [

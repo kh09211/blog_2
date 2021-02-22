@@ -1,3 +1,11 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
+
+    # format the date for all the date variables
+    date:
+        format: 'M j, Y H:i'
+
+    # global variable to be injected into all twig templates in ADDITION to global app var
+    globals:
+        appName: 'Blog de Viajeros'

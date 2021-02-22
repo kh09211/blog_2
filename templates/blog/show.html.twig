@@ -8,20 +8,20 @@
         <div class="row justify-content-center">
 
             <div class="col-md-10">
-                <div class="display-4 my-4 py-2 text-center text-info">{{ blog.title }}</div>
+                <div class="display-4 my-4 text-center text-info">{{ blog.title }}</div>
 
-                {# @can('update', $post) #}
-                <!-- The current user can update the post... -->
-                <div class="row justify-content-end">
-                    <a href="{{ path('blog_edit', {'id': blog.id}) }}" class="h5 text-info mr-5">Editar</a>
-                </div>
-                {# @endcan #}
+                {% if (app.user == blog.user) %}
+                        {# The current user can update the blog because they are the creator #}
+                        <div class="row justify-content-end">
+                            <a href="{{ path('blog_edit', {'id': blog.id}) }}" class="h5 text-info mr-5">Editar</a>
+                        </div>
+                {% endif %}
 
                 <div class="row justify-content-center">
                     <img src="{{ blog.photo }}" class="img-responsive w-50 my-4 border border-muted rounded shadow" />
                 </div>
 
-                <div class="text-secondary mt-3 py-1 text-center" style="font-size: 22px;">
+                <div class="text-secondary mt-1 py-1 text-center" style="font-size: 22px;">
                     Autor: {{ blog.user.name }}
                 </div>
 
